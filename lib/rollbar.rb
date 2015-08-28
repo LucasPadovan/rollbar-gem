@@ -672,6 +672,14 @@ module Rollbar
       result = Truncation.truncate(stringified_payload)
       return result unless Truncation.truncate?(result)
 
+      # temporary log for searching payload issues
+      directory = "log/"
+      File.open(File.join(directory, 'out.log'), 'a') do |log|
+        log.puts "contents"
+        log.puts result
+      end
+      # temporary log for searching payload issues
+
       original_size = Rollbar::JSON.dump(payload).bytesize
       final_size = result.bytesize
       send_failsafe("Could not send payload due to it being too large after truncating attempts. Original size: #{original_size} Final size: #{final_size}", nil)
