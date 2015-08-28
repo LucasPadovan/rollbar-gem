@@ -674,9 +674,16 @@ module Rollbar
 
       # temporary log for searching payload issues
       directory = "log/"
-      File.open(File.join(directory, 'out.log'), 'a') do |log|
-        log.puts "contents"
-        log.puts result
+      begin
+        File.open(File.join(directory, 'rollbar-payload.log'), 'a') do |log|
+          log.puts "#{Time.now} Error intentando enviar notificacion a rollbar, dump de lo que se iba a enviar"
+          log.puts payload
+        end
+      rescue
+          File.open('rollbar-payload.log', 'a') do |log|
+            log.puts "#{Time.now} Error intentando enviar notificacion a rollbar, dump de lo que se iba a enviar"
+            log.puts payload
+          end
       end
       # temporary log for searching payload issues
 
